@@ -1,13 +1,51 @@
-<link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kenneth's Birthday</title>
 
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
 <body>
-  <div id="countdown"></div>
-
-  <div id="content" style="display: none;">
-    <h1>🎉 Happy Birthday, Kenniebear! 🎂</h1>
-    <p>Wishing you an amazing year ahead full of joy and adventures!</p>
-    <button onclick="showConfetti()">Celebrate 🎊</button>
+  <!-- Balloons container -->
+  <div class="balloons">
+    <div class="balloon" style="left: 20%; --balloon-color: pink; animation-duration: 9s;"></div>
+    <div class="balloon" style="left: 40%; --balloon-color: lightblue; animation-duration: 12s;"></div>
+    <div class="balloon" style="left: 60%; --balloon-color: lightgreen; animation-duration: 10s;"></div>
+    <div class="balloon" style="left: 80%; --balloon-color: gold; animation-duration: 14s;"></div>
   </div>
 
+  <!-- Countdown screen -->
+  <div id="countdown"></div>
+
+  <!-- Reveal content -->
+  <div id="content">
+    <h1>🎉 Happy Birthday, Kenniebear! 🎂</h1>
+    <p>Wishing you an amazing year ahead full of joy and adventures!</p>
+    <button onclick="blastConfetti()">Celebrate 🎊</button>
+    <button onclick="playMusic()">Play Music Again 🎶</button>
+
+    <section>
+      <h2>🎥 A Birthday Message</h2>
+      <video controls width="400">
+        <source src="videos/jeffreys_video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
+
+    <section>
+      <h2>📸 Memories</h2>
+      <img src="images/photo1.jpg" class="memory-photo">
+      <img src="images/photo2.jpg" class="memory-photo">
+    </section>
+  </div>
+
+  <!-- Scripts -->
   <script src="script.js"></script>
 </body>
+</html>
