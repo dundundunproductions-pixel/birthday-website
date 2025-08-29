@@ -21,7 +21,7 @@ function updateCountdown() {
 
   // Update countdown text
   document.getElementById("countdown").innerHTML =
-    `🎉 Countdown to the big day: ${days}d ${hours}h ${minutes}m ${seconds}s 🎉`;
+    `🎉 Countdown to the Kennie's big day :): ${days}d ${hours}h ${minutes}m ${seconds}s 🎉`;
 }
 
 // Run every second
