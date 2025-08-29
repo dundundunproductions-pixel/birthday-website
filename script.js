@@ -1,31 +1,57 @@
-// 🎯 Set the target date (year, monthIndex, day, hour, minute)
-// NOTE: monthIndex is 0-based (0 = January, 11 = December)
-const targetDate = new Date(2025, 7, 2, 0, 0, 0).getTime();
+// ================================
+// Countdown + Reveal + Music Toggle
+// ================================
 
-let revealed = false; // prevents reveal code from running every second
+// 🎯 Target date (year, monthIndex, day, hour, minute)
+const targetDate = new Date(2025, 8, 2, 0, 0, 0).getTime();
+
+let revealed = false;
+
+// === Music ===
+const MUSIC_SRC = "videos/happy-birthday-jazz-171120.mp3"; // must exist in your repo
+const birthdayMusic = new Audio(MUSIC_SRC);
+birthdayMusic.loop = true;
+birthdayMusic.volume = 0.4; // softer
+
+// Wire the button AFTER DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  const musicBtn = document.getElementById("musicBtn");
+  if (!musicBtn) {
+    console.warn("Music button not found. Add <button id='musicBtn'>Play Music 🎶</button> to your HTML.");
+    return;
+  }
+
+  // Toggle handler
+  musicBtn.addEventListener("click", async () => {
+    try {
+      if (birthdayMusic.paused) {
+        await birthdayMusic.play();
+        musicBtn.textContent = "Pause Music ⏸️";
+      } else {
+        birthdayMusic.pause();
+        musicBtn.textContent = "Play Music 🎶";
+      }
+    } catch (err) {
+      console.error("Audio play failed. Check file path/extension:", err);
+    }
+  });
+});
 
 function updateCountdown() {
   const now = new Date().getTime();
   const timeLeft = targetDate - now;
 
   if (timeLeft <= 0 && !revealed) {
-    revealed = true; // ✅ run reveal only once
+    revealed = true;
 
-    // Hide countdown, show content
-    document.getElementById("countdown").style.display = "none";
-    document.getElementById("content").style.display = "block";
+    const countdownEl = document.getElementById("countdown");
+    const contentEl = document.getElementById("content");
+    if (countdownEl) countdownEl.style.display = "none";
+    if (contentEl) contentEl.style.display = "block";
 
-    // 🎊 Confetti blast for 5s
     blastConfetti();
 
-    // 🎵 Play music only once per visitor
-    if (!localStorage.getItem("playedMusic")) {
-      playMusic();
-      localStorage.setItem("playedMusic", "true");
-    }
-
-    // 🎈 Remove balloons after they float up
-    document.querySelectorAll('.balloon').forEach(balloon => {
+    document.querySelectorAll(".balloon").forEach((balloon) => {
       balloon.addEventListener("animationend", () => balloon.remove());
     });
 
@@ -33,27 +59,24 @@ function updateCountdown() {
   }
 
   if (timeLeft > 0) {
-    // Calculate days, hours, minutes, seconds
     const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-    // Update countdown text
-    document.getElementById("countdown").innerHTML =
-      `🎉 Countdown to Kennie's big day: ${days}d ${hours}h ${minutes}m ${seconds}s 🎉`;
+    const el = document.getElementById("countdown");
+    if (el) {
+      el.innerHTML = `🎉 Countdown to Kennie's big day: ${days}d ${hours}h ${minutes}m ${seconds}s 🎉`;
+    }
   }
 }
 
-// Run every second
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// 🎊 Confetti for 5 seconds then stop
+// 🎊 Confetti (5 seconds then stop)
 function blastConfetti() {
-  const duration = 5000; // 5 seconds
-  const end = Date.now() + duration;
-
+  const end = Date.now() + 5000;
   const interval = setInterval(() => {
     confetti({
       particleCount: 7,
@@ -61,20 +84,12 @@ function blastConfetti() {
       startVelocity: 30,
       origin: { x: Math.random(), y: Math.random() - 0.2 }
     });
-
-    if (Date.now() > end) {
-      clearInterval(interval); // ✅ stop bursts
-    }
-  }, 200); // burst every 200ms
+    if (Date.now() > end) clearInterval(interval);
+  }, 200);
 }
 
-// 🎊 Manual button confetti (5s burst as well)
+// Optional manual confetti button if you use it elsewhere
 function showConfetti() {
   blastConfetti();
 }
-
-// 🎵 Music
-function playMusic() {
-  const audio = new Audio("videos/happy-birthday-jazz-171120");
-  audio.play();
-}
+window.showConfetti = showConfetti;
