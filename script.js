@@ -3,7 +3,7 @@
 // ================================
 
 // 🎯 Target date (year, monthIndex, day, hour, minute)
-const targetDate = new Date(2025, 8, 2, 0, 0, 0).getTime();
+const targetDate = new Date(2025, 8, 1, 11, 2, 0).getTime();
 
 let revealed = false;
 
